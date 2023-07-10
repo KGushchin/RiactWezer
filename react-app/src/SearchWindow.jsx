@@ -6,8 +6,8 @@ import {Triangle} from 'react-loader-spinner'
 import Close from "./close";
 
 const SearchWindow = ({click, id, state, setState, checkClick}) => {
-  const key = '19c3fd00ffb8456dae8120317230807';
-  const link = `http://api.weatherapi.com/v1/current.json?key=${key}`;
+  const key = 'd847c38e8f16bd0ec95642f8e1919809';
+  const link = `https://api.openweathermap.org/data/2.5/weather?`;
   const [city,setCity] = useState('');
   let [dataName,setDataName] = useState('');
   let [deegresInfo,setDeegresInfo] = useState('');
@@ -21,18 +21,21 @@ const SearchWindow = ({click, id, state, setState, checkClick}) => {
      setTriagle(true);
 
      setTimeout(() => {
-         fetch(`${link}&q=${city}&lang=ru`)
+         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=ru&appid=${key}
+`)
              .then(function(resp){
                  return resp.json()
              })
 
              .then(function(data) {
-                setTriagle(false)
-                 setDataName(data.location.name);
-                 setDeegresInfo(data.current.temp_c);
-                 setImgLink(data.current.condition.icon);
-                 setDeegresDesc(data.current.condition.text);
-                 console.log(data, dataName)
+                 console.log(data)
+                 setTriagle(false)
+                 setDataName(data.name);
+                 setDeegresInfo(Math.floor(data.main.temp - 273));
+                 setImgLink("https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png");
+
+                 setDeegresDesc(data.weather[0].description);
+
                  setImg(true)
                  fixMistake(false)
              })
